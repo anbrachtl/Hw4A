@@ -1,6 +1,5 @@
 import org.junit.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
@@ -325,11 +324,6 @@ public class Examples {
     ArrayList<Integer> testCompareList2 = new ArrayList<>();
     ArrayList<Integer> testCompareList3 = new ArrayList<>();
     ArrayList<Integer> testCompareList4 = new ArrayList<>();
-
-    LinkedList<Integer> emptyList = new LinkedList<Integer>();
-    LinkedList<Integer> nonEmptyList = new LinkedList<Integer>();
-    LinkedList<Integer> multiEltList = new LinkedList<Integer>();
-    LinkedList<Integer> zeroNegativeList = new LinkedList<Integer>();
 
 
     // isHeap tests below----------------------------------------
