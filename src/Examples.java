@@ -1,11 +1,24 @@
 import org.junit.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 import static org.junit.Assert.*;
+
+/**
+ * Robert Batista and Abigail Brachtl
+ */
 
 public class Examples {
 
     public Examples(){
         myHeap = new DataHeap(2,
+                new DataHeap(4,
+                        new DataHeap(8),
+                        new DataHeap(10)),
+                new DataHeap(6,
+                        new DataHeap(12),
+                        new DataHeap(14)));
+        myBinTree = new DataHeap(2,
                 new DataHeap(4,
                         new DataHeap(8),
                         new DataHeap(10)),
@@ -126,8 +139,30 @@ public class Examples {
                                 new DataHeap(8),
                                 new MtHeap())));
 
+        HeapInvalidHeapA2 = new DataHeap(27,
+                new DataHeap(4,
+                        new DataHeap(2),
+                        new DataHeap(10)),
+                new DataHeap(14,
+                        new DataHeap(6),
+                        new DataHeap(12,
+                                new DataHeap(8),
+                                new MtHeap())));
+
 
         HeapAddTooMany = new DataHeap(2,
+                new DataHeap(4,
+                        new DataHeap(8),
+                        new DataHeap(10)),
+                new DataHeap(6,
+                        new DataHeap(12),
+                        new DataHeap(14,
+                                new DataHeap(27),
+                                new DataHeap(27,
+                                        new DataHeap(27),
+                                        new DataHeap(27)))));
+
+        HeapAddTooMany1 = new DataHeap(2,
                 new DataHeap(4,
                         new DataHeap(8),
                         new DataHeap(10)),
@@ -253,12 +288,16 @@ public class Examples {
     }
 
     HeapChecker HT = new HeapChecker();
+    IBinTree BT;
     IHeap myHeap;
     IHeap HeapRemoved;
     IHeap HeapDuplicate;
     IHeap HeapValue;
     IHeap HeapNegative;
     IHeap HeapEmpty;
+    IHeap NonEmptyHeap;
+    IHeap HeapAddTooMany1;
+    IBinTree myBinTree;
     IBinTree HeapAdded;
     IBinTree HeapAdded2;
     IBinTree HeapAdded3;
@@ -266,6 +305,7 @@ public class Examples {
     IBinTree HeapAdded5;
     IBinTree HeapAdded6;
     IBinTree HeapInvalidHeap1;
+    IBinTree HeapInvalidHeapA2;
     IBinTree HeapAddTooMany;
     IBinTree HeapEltTooMany1;
     IBinTree HeapWrongTotal1;
@@ -277,6 +317,8 @@ public class Examples {
     IBinTree HeapEltTooMany2;
     IBinTree HeapWrongTotal2;
     DataBT testDataBT = new DataBT(1);
+    DataBT testData2BT = new DataBT(2);
+    MtHeap MT = new MtHeap();
 
 
     ArrayList<Integer> testCompareList1 = new ArrayList<>();
@@ -284,6 +326,44 @@ public class Examples {
     ArrayList<Integer> testCompareList3 = new ArrayList<>();
     ArrayList<Integer> testCompareList4 = new ArrayList<>();
 
+    LinkedList<Integer> emptyList = new LinkedList<Integer>();
+    LinkedList<Integer> nonEmptyList = new LinkedList<Integer>();
+    LinkedList<Integer> multiEltList = new LinkedList<Integer>();
+    LinkedList<Integer> zeroNegativeList = new LinkedList<Integer>();
+
+
+    // isHeap tests below----------------------------------------
+    @Test
+    public void testIsHeapMethodValidTrue() {
+        assertTrue(myBinTree.isHeap());
+    }
+
+    @Test
+    public void testIsHeapMethodInValidFalse() {
+        assertFalse(HeapInvalidHeap2.isHeap());
+    }
+
+    @Test
+    public void testIsHeapInValidFalse() {
+        assertFalse(HeapInvalidHeap1.isHeap());
+    }
+
+    @Test
+    public void testIsHeapEmptyTrue () {
+        assertTrue(HeapEmpty.isHeap());
+    }
+
+    @Test
+    public void testIsHeapMultiElt() {
+        assertTrue(HeapAddTooMany1.isHeap());
+    }
+
+    @Test
+    public void testIsHeapMultiEltBin() {
+        assertTrue(HeapAddTooMany.isHeap());
+    }
+
+    //--------------compareList tests below-------------------------------
 
     @Test
     public void testCompareListsTrue(){
@@ -299,12 +379,19 @@ public class Examples {
     public void testCompareListsNotSameSize(){
         assertFalse(testDataBT.compareLists(testCompareList1, testCompareList4));
     }
+    // ----------------equals test below-------------------------------------
 
+    @Test
+    public void testEqualsTrue(){
+        MtHeap testMtHeap = new MtHeap();
+        assertTrue(testMtHeap.equals(new MtHeap()));
+    }
+
+    // ----------remMinEltTester tests below------------------------------
     @Test
     public void testRemMinEltTesterNormalRemoval(){
         assertTrue(HT.remMinEltTester(myHeap, HeapRemoved));
     }
-
 
     @Test
     public void testRemMinEltTesterRemoveDuplicate(){
@@ -361,26 +448,66 @@ public class Examples {
         assertTrue(HT.remMinEltTester(myHeap,myHeap.remMinElt()));
     }
 
+//-------------------------------addEltTester tests below------------------------
+
+    /**
+     * myHeap = new DataHeap(2,
+     *                 new DataHeap(4,
+     *                         new DataHeap(8),
+     *                         new DataHeap(10)),
+     *                 new DataHeap(6,
+     *                         new DataHeap(12),
+     *                         new DataHeap(14)));
+     */
+
     @Test
-    public void testEqualsTrue(){
-        MtHeap testMtHeap = new MtHeap();
-        assertTrue(testMtHeap.equals(new MtHeap()));
+        public void testAddTesterAdd1BottomTree(){
+            assertTrue(HT.addEltTester(myHeap, 19, HeapAdded));
+        }
+
+        @Test
+        public void testAddTesterAdd2MiddleTree() {
+            assertTrue(HT.addEltTester(myHeap, 7, HeapAdded2));
     }
 
+        @Test
+        public void testAddEltTesterAdd3TopTree(){
+            assertTrue(HT.addEltTester(myHeap, 1, HeapAdded3));
+        }
+        @Test
+        public void testAddEltTesterAdd4NegativeNumber(){
+            assertTrue(HT.addEltTester(myHeap, -10, HeapAdded4));
+        }
+
+        @Test
+         public void testAddEltTesterAddMultiEltNumber(){
+             assertTrue(HT.addEltTester(myHeap, 2, HeapAdded5));
+        }
+         @Test
+         public void testAddEltTesterAddNegativeNumber1(){
+              assertTrue(HT.addEltTester(HeapEmpty, 27, HeapAdded6));
+        }
+        @Test
+        public void testAddEltTesterInvalidHeap() {
+            assertFalse(HT.addEltTester(myHeap,27, HeapInvalidHeapA2));
+        }
+        @Test
+        public void testAddEltTesterTooManyBottomTree() {
+            assertFalse(HT.addEltTester(myHeap, 27, HeapAddTooMany));
+        }
+        @Test
+        public void testAddEltTesterTooManyMiddleTree() {
+            assertFalse(HT.addEltTester(myHeap, 14, HeapEltTooMany1));
+        }
+        @Test
+        public void testAddEltTesterWrongTotalInNewTree() {
+            assertFalse(HT.addEltTester(myHeap, 27, HeapWrongTotal1));
+        }
+        @Test
+        public void testAddEltTesterSimplyWrong() {
+            assertFalse(HT.addEltTester(myHeap, 9, HeapThrowFalse));
+        }
 
 
-        @Test
-        public void test1(){
-                assertTrue(HT.addEltTester(myHeap, 5, myHeap.addElt(5)));
-        }
-      /*
-        @Test
-        public void test2(){
-                assertTrue(HT.addEltTester(myHeap,5, myBinTree));
-        }
-        @Test
-        public void test3(){
-            assertTrue(HT.addEltTester(myHeap, 5, myBinTree));
-        }
-*/
+
 }

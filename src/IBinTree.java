@@ -18,7 +18,7 @@ interface IBinTree {
 
     public boolean isHeap();
 
-    public boolean containsAfterAdd(IHeap hOrig, int elt, IBinTree hAdded);
+    public boolean containsAfterAdd(IHeap hOrig, int elt);
 
     public boolean containsAfterRem(IHeap heap);
 
@@ -26,7 +26,7 @@ interface IBinTree {
 
     public boolean equals(IBinTree heap);
 
-    public LinkedList<Integer> treeToList(IBinTree hAdded);
+    //public LinkedList<Integer> treeToList(IBinTree hAdded);
 
     IBinTree getLeftChild();
 
@@ -58,7 +58,7 @@ class MtBT implements IBinTree {
         return 0;
     }
 
-    //-------------------added-code-------------------------------------------------
+    //-------------------added-code-below------------------------------------------------
 
 
     /**
@@ -109,10 +109,11 @@ class MtBT implements IBinTree {
      * @param hAdded
      * @return empty list
      */
+    /*
     public LinkedList<Integer> treeToList(IBinTree hAdded) {
         return new LinkedList<Integer>();
     }
-
+    */
 
     /**
      * compareLists: consumes two lists and return true if both lists are the same.
@@ -145,10 +146,10 @@ class MtBT implements IBinTree {
      *
      * @param heap   original heap
      * @param elt    element added to heap
-     * @param hAdded new heap with element
+     * //@param hAdded new heap with element
      * @return false
      */
-    public boolean containsAfterAdd(IHeap heap, int elt, IBinTree hAdded) {
+    public boolean containsAfterAdd(IHeap heap, int elt) {
         return false;
     }
 
@@ -295,24 +296,36 @@ class DataBT implements IBinTree {
 //                  then returns true if both binary trees contain the same data nodes.
 //                  needs to needs implemented;
 
+    public boolean containsAfterAdd(IHeap heap, int elt){
+        ArrayList<Integer> heapElt = new ArrayList<>();
+        ArrayList<Integer> binaryElt = new ArrayList<>();
+
+        Tree heapData = new Tree();
+        Tree binaryData = new Tree();
+
+        heapData.storeKeyValues(heap);
+        binaryData.storeKeyValues(this);
+
+        heapElt= heapData.values;
+        heapElt.add(elt);
+        binaryElt = binaryData.values;
+
+        return compareLists(heapElt, binaryElt);
+    }
+
+    /*
     public boolean containsAfterAdd(IHeap hOrig, int elt, IBinTree hAdded) {
         LinkedList<Integer> originalList = new LinkedList<Integer>();
         LinkedList<Integer> newList = new LinkedList<Integer>();
-
         originalList = treeToList(hOrig);
         newList = treeToList(hAdded);
-
         if (newList.contains(elt)) {
             newList.remove(elt);   //clean element from list
         } else return false;
-
         for (int e : originalList) {
-
             int origCount = 0;
             int newCount = 0;
-
             if (newList.size() == originalList.size()) {
-
                 for (int o : originalList) {
                     if (o == e) {
                         origCount++;
@@ -324,16 +337,13 @@ class DataBT implements IBinTree {
                     }
                 }
             } else return false;
-
             if (origCount != newCount) {
                 return false;
             }
-
         }
-        return true; //return //TODO
-
+        return true;
     }
-
+*/
 
     /**
      * treeToList takes a tree and puts it into a linked list
@@ -341,6 +351,7 @@ class DataBT implements IBinTree {
      * @param hAdded binary tree
      * @return linked list of integers that represents the tree values
      */
+    /*
     public LinkedList<Integer> treeToList(IBinTree hAdded) {
         LinkedList<Integer> list = new LinkedList();
         list.add(this.data);
@@ -352,7 +363,7 @@ class DataBT implements IBinTree {
         }
         return list;
     }
-
+*/
 
     /**
      * containsAfterRem:
